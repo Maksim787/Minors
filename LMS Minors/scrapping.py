@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 with open("site.txt", encoding="utf-8") as file:
     site = file.readlines()
@@ -39,8 +40,17 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 df = df.sort_values(by=["first", "second", "third"], ascending=False)
+df.index = pd.Series(range(df.shape[0]))
 print(sum(df["first"]))
 print(sum(df["second"]))
 print(sum(df["third"]))
 df.to_csv("Minors.csv")
 print(df)
+
+fig, ax = plt.subplots()
+df = df[df["first"] >= 30]
+ax.barh(df["name"],
+        df["first"] + 0.5 * df["second"] + 0.25 * df["third"])
+ax.invert_yaxis()
+ax.tick_params(axis='y', labelsize=7)
+plt.show()
